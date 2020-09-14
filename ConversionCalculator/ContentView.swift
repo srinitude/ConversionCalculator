@@ -9,6 +9,25 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var possibleSourceUnits = [
+        "meters",
+        "kilometers",
+        "feet",
+        "yards",
+        "miles"
+    ]
+    @State private var currentSourceUnit = "meters"
+    
+    @State private var possibleDestinationUnits = [
+        "meters",
+        "kilometers",
+        "feet",
+        "yards",
+        "miles"
+    ]
+    @State private var currentDestinationUnit = "meters"
+    
+    
     var body: some View {
         Text("Hello, World!")
     }
