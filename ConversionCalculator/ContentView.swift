@@ -9,27 +9,71 @@
 import SwiftUI
 
 struct ContentView: View {
+    // MARK: - Units to bind to input fields
     @State private var possibleSourceUnits = [
         "meters",
-        "kilometers",
+        "kilos",
         "feet",
         "yards",
         "miles"
     ]
-    @State private var currentSourceUnit = "meters"
-    
     @State private var possibleDestinationUnits = [
         "meters",
-        "kilometers",
+        "kilos",
         "feet",
         "yards",
         "miles"
     ]
-    @State private var currentDestinationUnit = "meters"
     
+    @State private var currentSourceUnitIndex = 0
+    @State private var currentDestinationUnitIndex = 0
     
+    @State private var numberOfSourceUnitsStr = "0"
+    
+    // MARK: - Important variables
+    private var baseUnit = "meters"
+    
+    private var numberOfSourceUnits: Double {
+        Double(numberOfSourceUnitsStr) ?? 0
+    }
+    private var currentSourceUnit: String {
+        possibleSourceUnits[currentSourceUnitIndex]
+    }
+    private var currentDestinationUnit: String {
+        possibleDestinationUnits[currentDestinationUnitIndex]
+    }
+    
+    private var convertedSourceToDestinationNumber: Double {
+        return 0
+    }
+    
+    // MARK: - UI
     var body: some View {
-        Text("Hello, World!")
+        Form {
+            Section(header: Text("Source Unit")) {
+                Picker(selection: $currentSourceUnitIndex, label: Text("Source Unit")) {
+                    ForEach(0..<possibleSourceUnits.count) {
+                        Text(self.possibleSourceUnits[$0])
+                    }
+                }.pickerStyle(SegmentedPickerStyle())
+            }
+            
+            Section(header: Text("Destination Unit")) {
+                Picker(selection: $currentDestinationUnitIndex, label: Text("Destination Unit")) {
+                    ForEach(0..<possibleDestinationUnits.count) {
+                        Text(self.possibleDestinationUnits[$0])
+                    }
+                }.pickerStyle(SegmentedPickerStyle())
+            }
+            
+            Section(header: Text("How many \(currentDestinationUnit) are equal to \(numberOfSourceUnitsStr) \(currentSourceUnit)?")) {
+                TextField("Number of \(currentSourceUnit)", text: $numberOfSourceUnitsStr).keyboardType(.decimalPad)
+            }
+            
+            Section(header: Text("Answer")) {
+                Text("\(convertedSourceToDestinationNumber, specifier: "%.2f") \(currentDestinationUnit)")
+            }
+        }
     }
 }
 
